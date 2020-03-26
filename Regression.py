@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import sys
+import os
 import math
 import matplotlib.pyplot as plt
 
@@ -97,6 +98,9 @@ Training error with different optimization
 # Parameters initialization
 iterations = 10000
 lr = 0.000001
+
+#Initialize weight every time before training,
+#otherwise, it will use the weight from previous training.
 w0 = np.zeros([9*18+1, 1])
 w_gd, cost_gd = gradientDescent(x_train, y_train, lr, w0, iterations, 0)
 w0 = np.zeros([9*18+1, 1])
@@ -110,8 +114,9 @@ plt.plot(np.arange(len(cost_gd_L2[10:])), cost_gd_L2[10:], '--y', label='Gradien
 plt.plot(np.arange(len(cost_ada[10:])), cost_ada[10:], '--g', label='Adagrad')
 plt.legend()
 plt.xlabel('Iterations')
-plt.ylabel('Mean Square Error')
+plt.ylabel('Cost Function(MSE)')
 plt.title('Conversion with different optimizations')
+plt.savefig(os.path.join(os.path.dirname("Data/hw1_results/cost_compare")))
 plt.show()
 
 '''
@@ -140,5 +145,5 @@ plt.legend()
 plt.subplot(1,3,3)
 plt.plot(np.arange(1, len(y_pred_ada)+1), y_pred_ada,'g--', label='Adagrad')
 plt.legend()
-
+plt.savefig(os.path.join(os.path.dirname("Data/hw1_results/opt_compare")))
 plt.show()
