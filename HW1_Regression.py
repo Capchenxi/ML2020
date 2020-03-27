@@ -41,14 +41,15 @@ for month in range(12):
             y[month * 471 + day * 24 + hour, 0] = month_data[month][9, day * 24 + hour + 9] #value
 
 # Normalization
-mean_x = np.mean(x, axis = 0) #18 * 9
-std_x = np.std(x, axis = 0) #18 * 9
-for i in range(len(x)): #12 * 471
-    for j in range(len(x[0])): #18 * 9
-        if std_x[j] != 0:
-            x[i][j] = (x[i][j] - mean_x[j]) / std_x[j]
+# mean_x = np.mean(x, axis = 0) #18 * 9
+# std_x = np.std(x, axis = 0) #18 * 9
+# for i in range(len(x)): #12 * 471
+#     for j in range(len(x[0])): #18 * 9
+#         if std_x[j] != 0:
+#             x[i][j] = (x[i][j] - mean_x[j]) / std_x[j]
 
 # Split dataset into training and validation set.
+print(x.shape)
 x_train = x[: math.floor(len(x) * 0.8), :]
 y_train = y[: math.floor(len(y) * 0.8), :]
 x_val = x[math.floor(len(x) * 0.8): , :]
@@ -65,7 +66,7 @@ def gradientDescent(X, Y, lr, w, iterations, L2):
         loss = Y_hat - Y
         cost = np.sum(loss**2)/X.shape[0]
         cost_list.append(cost)
-        gradient = 2*np.dot(X.transpose(), loss) + 2*L2*w
+        gradient = 2*np.dot(X.transpose()/X.shape[0], loss) + 2*L2*w
         w -= lr*gradient
         if i % 1000 == 0:
             print("iteration:{}, cost:{} ".format(i, cost))
@@ -82,8 +83,7 @@ def Adagrad(X, Y, lr, w, iterations, L2):
         cost = np.sum(loss**2)/X.shape[0]
 
         cost_list.append(cost)
-
-        gradient = 2*np.dot(X.transpose()/X.shape[0], loss) + 2*L2*w
+        gradient = 2*np.dot(X.transpose(), loss) + 2*L2*w
         prev_grad = prev_grad + gradient**2
         adapt_lr = lr / np.sqrt(prev_grad + epsilon)
         w = w - adapt_lr * gradient
@@ -106,16 +106,17 @@ w_gd, cost_gd = gradientDescent(x_train, y_train, lr, w0, iterations, 0)
 w0 = np.zeros([9*18+1, 1])
 w_gd_L2, cost_gd_L2 = gradientDescent(x_train, y_train, lr, w0, iterations, 100)
 w0 = np.zeros([9*18+1, 1])
-w_ada, cost_ada = Adagrad(x_train, y_train, 5, w0, iterations, 0)
+w_ada, cost_ada = Adagrad(x_train, y_train, 0.5, w0, iterations, 0)
+print(cost_ada)
 
 plt.figure()
-plt.plot(np.arange(len(cost_gd[10:])), cost_gd[10:], '--b', label='Gradient Descent')
-plt.plot(np.arange(len(cost_gd_L2[10:])), cost_gd_L2[10:], '--y', label='Gradient Descent w/ L2')
-plt.plot(np.arange(len(cost_ada[10:])), cost_ada[10:], '--g', label='Adagrad')
+plt.plot(np.arange(len(cost_gd)), cost_gd, '--b', label='Gradient Descent')
+plt.plot(np.arange(len(cost_gd_L2)), cost_gd_L2, '--r', label='Gradient Descent w/ L2')
+# plt.plot(np.arange(len(cost_ada)), cost_ada, '--g', label='Adagrad')
 plt.legend()
 plt.xlabel('Iterations')
 plt.ylabel('Cost Function(MSE)')
-plt.title('Conversion with different optimizations')
+plt.title('Training error comparison without Data Normalization')
 plt.savefig(os.path.join(os.path.dirname("Data/hw1_results/cost_compare")))
 plt.show()
 
