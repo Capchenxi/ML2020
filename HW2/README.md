@@ -28,11 +28,11 @@
 
 - Method1做的是判别模型，可以看到训练和validate数据的准确率图。用的是最简单的gradient descent的方法，lr= 0.0002， batchsize=8
 
-  ![Figure_1](../../Blog/source/images/Figure_1.png)
+  ![Figure_1](https://github.com/Capchenxi/ML2020/blob/master/HW2/hw2_results/Figure_1.png)
 
 - Method2做的是生成模型，直接用每个模型本身的均值和方差来估计模型的参数，然后再放入logistic regression中进行判别。
 
-  ![Figure_2](../../Blog/source/images/Figure_2.jpeg)
+  ![Figure_2](https://github.com/Capchenxi/ML2020/blob/master/HW2/hw2_results/Figure_2.jpeg)
 
 
 
