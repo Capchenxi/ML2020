@@ -33,6 +33,18 @@
 - Method2做的是生成模型，直接用每个模型本身的均值和方差来估计模型的参数，然后再放入logistic regression中进行判别。
 
   ![Figure_2](https://github.com/Capchenxi/ML2020/blob/master/HW2/hw2_results/Figure_2.jpeg)
+  
+- Regularization
+
+  
+
+- Feature normalization
+
+  已添加。
+
+  未添加Normalization的结果如下：
+
+  ![Figure_3](https://github.com/Capchenxi/ML2020/blob/master/HW2/hw2_results/Figure_3.png)
 
 
 
